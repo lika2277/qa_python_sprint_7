@@ -1,2 +1,13 @@
-# qa_python_sprint_7
-Практикум 7 спринт
+# Практикум 7 спринт
+
+Запуск автотестов:
+
+Unix:
+```commandline
+pytest 
+```
+
+Windows (PowerShell):
+```commandline
+python -m pytest
+```

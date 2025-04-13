@@ -2,7 +2,6 @@ url = "https://qa-scooter.praktikum-services.ru"
 path = url + "/api/v1"
 endpoint_orders = path + "/orders"
 endpoint_courier = path + "/courier"
-# respons_messages =
 
 orders = [
     {

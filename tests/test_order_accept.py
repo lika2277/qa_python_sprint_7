@@ -1,6 +1,7 @@
 import pytest
 import allure
 from instances.order import Order
+from data.order import messages_accept as messages
 
 @allure.suite("Принять заказ")
 @pytest.mark.usefixtures("register_and_delete")
@@ -13,20 +14,20 @@ class TestOrderAccept:
     @allure.title("если не передать id курьера, запрос вернёт ошибку")
     def test_order_accept_error_courier_id(self, order_id):
         response = Order.accept_order(order_id)
-        assert response.status_code == 400 and response.json()['message'] ==  "Недостаточно данных для поиска"
+        assert response.status_code == 400 and response.json()['message'] == messages.get(400)
 
     @allure.title("если передать неверный id курьера, запрос вернёт ошибку")
     def test_order_accept_wrong_courier_id(self, order_id):
         response = Order.accept_order(order_id, 1234567)
-        assert response.status_code == 404 and response.json()['message'] ==  "Курьера с таким id не существует"
+        assert response.status_code == 404 and response.json()['message'] == messages.get(404)
 
     @allure.title("если не передать id заказа, запрос вернёт ошибку")
     def test_order_accept_error_order_id(self):
         pytest.skip("неправильный код ответа")
         response = Order.accept_order(None, self.courier_id)
-        assert response.status_code == 400 and response.json()['message'] ==  "Недостаточно данных для поиска"
+        assert response.status_code == 400 and response.json()['message'] == messages.get(400)
 
     @allure.title("если передать неверный id заказа, запрос вернёт ошибку")
     def test_order_accept_wrong_order_id(self):
         response = Order.accept_order(1234567, self.courier_id)
-        assert response.status_code == 404 and response.json()['message'] ==  "Заказа с таким id не существует"
+        assert response.status_code == 404 and response.json()['message'] == messages.get(404)

@@ -1,7 +1,7 @@
 import allure
 import pytest
-
 from instances.courier import Courier
+from data.courier import messages_delete as messages
 
 @allure.suite("Удалить курьера")
 class TestCourierDelete:
@@ -9,17 +9,17 @@ class TestCourierDelete:
     def test_courier_delete_error(self):
         pytest.skip('Неправильный код ответа')
         response = Courier.delete_courier("a123")
-        assert response.status_code == 404 and response.json()["message"] == 'Not Found.'
+        assert response.status_code == 404 and response.json()["message"] == messages.get(404)
 
     @allure.title("если отправить запрос без id, вернётся ошибка")
     def test_courier_delete_error_without_id(self):
         response = Courier.delete_courier()
-        assert response.status_code == 404 and response.json()["message"] == 'Not Found.'
+        assert response.status_code == 404 and response.json()["message"] == messages.get(404)
 
     @allure.title("если отправить запрос с несуществующим id, вернётся ошибка")
     def test_courier_delete_error_wrong_id(self):
         response = Courier.delete_courier(1234567)
-        assert response.status_code == 404 and response.json()["message"] == "Курьера с таким id нет."
+        assert response.status_code == 404 and response.json()["message"] == messages.get(404)
 
     @allure.title("успешный запрос возвращает 'ok'")
     def test_courier_delete_error_success(self, courier_id):

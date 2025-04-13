@@ -1,6 +1,7 @@
-from instances.courier import Courier
-import pytest
 import allure
+import pytest
+from instances.courier import Courier
+from data.courier import messages_login as messages
 
 @allure.suite("Логин курьера")
 @pytest.mark.usefixtures("register_and_delete")
@@ -16,25 +17,25 @@ class TestCourierLogin:
         courier = self.courier.copy()
         del courier["password"]
         response = Courier.login_courier(courier)
-        assert response.status_code == 400 and response.json()["message"] == "Недостаточно данных для входа"
+        assert response.status_code == 400 and response.json()["message"] == messages.get(400)
 
     @allure.title("система вернёт ошибку, если неправильно указать логин или пароль")
     def test_courier_login_wrong_password(self):
         courier = self.courier.copy()
         courier["password"] = '1234567'
         response = Courier.login_courier(courier)
-        assert response.status_code == 404 and response.json()["message"] == "Учетная запись не найдена"
+        assert response.status_code == 404 and response.json()["message"] == messages.get(404)
 
     @allure.title("если какого-то поля нет, запрос возвращает ошибку")
     def test_courier_login_empty_password(self):
         courier = self.courier.copy()
         courier["password"] = ''
         response = Courier.login_courier(courier)
-        assert response.status_code == 400 and response.json()["message"] == "Недостаточно данных для входа"
+        assert response.status_code == 400 and response.json()["message"] == messages.get(400)
 
     @allure.title("если авторизоваться под несуществующим пользователем, запрос возвращает ошибку")
     def test_courier_login_wrong_login(self):
         courier = Courier.generate_new_courier()
         response = Courier.login_courier(courier)
-        assert response.status_code == 404 and response.json()["message"] == "Учетная запись не найдена"
+        assert response.status_code == 404 and response.json()["message"] == messages.get(404)
 

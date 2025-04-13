@@ -5,13 +5,8 @@ import allure
 @allure.suite("Логин курьера")
 @pytest.mark.usefixtures("register_and_delete")
 class TestCourierLogin(Courier):
-    @allure.title("курьер может авторизоваться")
+    @allure.title("курьер может авторизоваться и успешный запрос возвращает id")
     def test_courier_login(self):
-        response = self.login_courier(self.courier)
-        assert response.status_code == 200
-
-    @allure.title("успешный запрос возвращает id")
-    def test_courier_login_id(self):
         response = self.login_courier(self.courier)
         assert response.status_code == 200 and response.json()["id"]
 

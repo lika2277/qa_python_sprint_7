@@ -8,7 +8,7 @@ class TestOrderGet(Order):
     @allure.title("успешный запрос возвращает объект с заказом")
     def test_order_get_success(self, order_track):
         response = self.get_order_by_track(order_track)
-        assert response.json()["order"]
+        assert response.status_code == 200 and response.json()["order"]
 
     @allure.title("запрос без номера заказа возвращает ошибку")
     def test_order_get_without_track(self):

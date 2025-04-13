@@ -1,14 +1,12 @@
 import random
 import string
-
 import allure
 import requests
 from data.data import endpoint_courier
 
 class Courier:
-
-    @allure.step("Генерация нового курьера")
     @staticmethod
+    @allure.step("Генерация нового курьера")
     def generate_new_courier():
         def generate_random_string(length):
             letters = string.ascii_lowercase
@@ -21,21 +19,21 @@ class Courier:
             "first_name": generate_random_string(10)
         }
 
-    @allure.step("Регистрация курьера")
     @staticmethod
+    @allure.step("Регистрация курьера")
     def register_new_courier(payload = None):
         if not payload:
             raise Exception('Courier not passed')
         return requests.post(endpoint_courier, data=payload)
 
-    @allure.step("Авторизация курьера")
     @staticmethod
+    @allure.step("Авторизация курьера")
     def login_courier(payload = None):
         if not payload:
             raise Exception('Courier login and password not passed')
         return requests.post(endpoint_courier + '/login', data=payload)
 
-    @allure.step("Удаление курьера")
     @staticmethod
+    @allure.step("Удаление курьера")
     def delete_courier(payload = None):
-        return requests.delete(endpoint_courier + (str(payload) if payload else ''))
+        return requests.delete(endpoint_courier + "/" + (str(payload) if payload else ''))

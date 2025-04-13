@@ -25,4 +25,4 @@ class Order:
     @staticmethod
     @allure.step("Принять заказ")
     def accept_order(order_id=None, courier_id=None):
-        return requests.put(endpoint_orders + "/accept" + (str(order_id) if order_id else '') + ('?courierId=' + str(courier_id) if courier_id else ''))
+        return requests.put(endpoint_orders + "/accept/" + (str(order_id) if order_id else '') + ('?courierId=' + str(courier_id) if courier_id else ''))

@@ -1,33 +1,33 @@
 import pytest
 import allure
 from instances.order import Order
-from data.order import messages_accept as messages
+from data.order import messages_accept_courier as messages_courier, messages_accept_order as messages_order
 
 @allure.suite("Принять заказ")
 @pytest.mark.usefixtures("register_and_delete")
 class TestOrderAccept:
     @allure.title("успешный запрос возвращает 'ok'")
     def test_order_accept_success(self, order_id):
-        response = Order.accept_order(order_id, self.courier_id)
+        response = Order.accept_order(order_id, self.courier.get("id"))
         assert response.status_code == 200 and response.json()['ok'] == True
 
     @allure.title("если не передать id курьера, запрос вернёт ошибку")
     def test_order_accept_error_courier_id(self, order_id):
         response = Order.accept_order(order_id)
-        assert response.status_code == 400 and response.json()['message'] == messages.get(400)
+        assert response.status_code == 400 and response.json()['message'] == messages_courier.get(400)
 
     @allure.title("если передать неверный id курьера, запрос вернёт ошибку")
     def test_order_accept_wrong_courier_id(self, order_id):
         response = Order.accept_order(order_id, 1234567)
-        assert response.status_code == 404 and response.json()['message'] == messages.get(404)
+        assert response.status_code == 404 and response.json()['message'] == messages_courier.get(404)
 
     @allure.title("если не передать id заказа, запрос вернёт ошибку")
     def test_order_accept_error_order_id(self):
         pytest.skip("неправильный код ответа")
-        response = Order.accept_order(None, self.courier_id)
-        assert response.status_code == 400 and response.json()['message'] == messages.get(400)
+        response = Order.accept_order(None, self.courier.get("id"))
+        assert response.status_code == 400 and response.json()['message'] == messages_courier.get(400)
 
     @allure.title("если передать неверный id заказа, запрос вернёт ошибку")
     def test_order_accept_wrong_order_id(self):
-        response = Order.accept_order(1234567, self.courier_id)
-        assert response.status_code == 404 and response.json()['message'] == messages.get(404)
+        response = Order.accept_order(1234567, self.courier.get("id"))
+        assert response.status_code == 404 and response.json()['message'] == messages_order.get(404)

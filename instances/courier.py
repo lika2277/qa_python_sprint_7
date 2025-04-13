@@ -37,3 +37,19 @@ class Courier:
     @allure.step("Удаление курьера")
     def delete_courier(payload = None):
         return requests.delete(endpoint_courier + "/" + (str(payload) if payload else ''))
+
+    @staticmethod
+    @allure.step("Регистрация нового курьера и возвращние его описания")
+    def register_and_return_new_courier():
+        courier = Courier.generate_new_courier()
+
+        register_response = Courier.register_new_courier(courier)
+        if register_response.status_code != 201:
+            raise Exception("Can't register new courier")
+
+        login_response = Courier.login_courier(courier)
+        if login_response.status_code != 200:
+            raise Exception("Can't login")
+
+        courier["id"] = login_response.json()["id"]
+        return courier

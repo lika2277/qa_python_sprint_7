@@ -5,7 +5,8 @@ messages_create = {
 }
 
 messages_delete = {
-    404: "Not Found."
+    "_404": "Not Found.",
+    404: "Курьера с таким id нет."
 }
 
 messages_login = {

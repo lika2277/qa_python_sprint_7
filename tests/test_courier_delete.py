@@ -14,7 +14,7 @@ class TestCourierDelete:
     @allure.title("если отправить запрос без id, вернётся ошибка")
     def test_courier_delete_error_without_id(self):
         response = Courier.delete_courier()
-        assert response.status_code == 404 and response.json()["message"] == messages.get(404)
+        assert response.status_code == 404 and response.json()["message"] == messages.get("_404")
 
     @allure.title("если отправить запрос с несуществующим id, вернётся ошибка")
     def test_courier_delete_error_wrong_id(self):

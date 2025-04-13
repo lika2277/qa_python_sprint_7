@@ -5,23 +5,11 @@ from instances.order import Order
 
 @pytest.fixture(scope="class")
 def register_and_delete(request):
-    courier = Courier.generate_new_courier()
-
-    register_response = Courier.register_new_courier(courier)
-    if register_response.status_code == 201:
-        request.cls.courier = courier
-    else:
-        raise Exception("Can't register new courier")
-
-    login_response = Courier.login_courier(courier)
-    if login_response.status_code == 200:
-        request.cls.courier_id = login_response.json()["id"]
-    else:
-        raise Exception("Can't login")
+    request.cls.courier = Courier.register_and_return_new_courier()
 
     yield
 
-    delete_response = Courier.delete_courier(request.cls.courier_id)
+    delete_response = Courier.delete_courier(request.cls.courier.get("id"))
     if delete_response.status_code != 200:
         raise Exception("Can't delete")
 
@@ -31,17 +19,8 @@ def order(request):
 
 @pytest.fixture(scope="function")
 def courier_id():
-    courier = Courier.generate_new_courier()
-
-    register_response = Courier.register_new_courier(courier)
-    if register_response.status_code != 201:
-        raise Exception("Can't register new courier")
-
-    login_response = Courier.login_courier(courier)
-    if login_response.status_code != 200:
-        raise Exception("Can't login")
-
-    return login_response.json()["id"]
+    courier = Courier.register_and_return_new_courier()
+    return courier.get("id")
 
 @pytest.fixture(scope="function")
 def order_track(order):

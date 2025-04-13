@@ -3,7 +3,7 @@ import string
 
 import allure
 import requests
-from data.data import url
+from data.data import endpoint_courier
 
 class Courier:
 
@@ -26,16 +26,16 @@ class Courier:
     def register_new_courier(payload = None):
         if not payload:
             raise Exception('Courier not passed')
-        return requests.post(url + '/api/v1/courier', data=payload)
+        return requests.post(endpoint_courier, data=payload)
 
     @allure.step("Авторизация курьера")
     @staticmethod
     def login_courier(payload = None):
         if not payload:
             raise Exception('Courier login and password not passed')
-        return requests.post(url + '/api/v1/courier/login', data=payload)
+        return requests.post(endpoint_courier + '/login', data=payload)
 
     @allure.step("Удаление курьера")
     @staticmethod
     def delete_courier(payload = None):
-        return requests.delete(url + '/api/v1/courier/' + (str(payload) if payload else ''))
+        return requests.delete(endpoint_courier + (str(payload) if payload else ''))

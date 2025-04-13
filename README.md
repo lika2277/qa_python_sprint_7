@@ -4,10 +4,10 @@
 
 Unix:
 ```commandline
-pytest 
+pytest --alluredir=allure_results 
 ```
 
 Windows (PowerShell):
 ```commandline
-python -m pytest
+python -m pytest --alluredir=allure_results 
 ```
